@@ -1,0 +1,126 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 30px;
+    background: #f9f9f9;
+    color: #333;
+  }
+  
+  .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  h1 {
+    margin-bottom: 10px;
+    font-size: 2.5em;
+  }
+  
+  .instructions {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    text-align: center;
+    line-height: 1.4em;
+    color: #555;
+  }
+  
+  .equation-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .numbers-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    flex-direction: row;
+  }
+  
+  .number {
+    font-size: 2.5em;
+    user-select: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: inline-block;
+    margin: 5px;
+  }
+  .number:hover {
+    transform: scale(1.05);
+  }
+  
+  .slot, .slot-group {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .slot {
+    min-width: 20px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .slot-group {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .droppable.highlight {
+    outline: 2px dashed #4CAF50;
+  }
+  
+  .operator {
+    cursor: pointer;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 0 4px;
+    min-width: 40px;
+    text-align: center;
+    font-size: 2em;
+    background: #eee;
+    transition: transform 0.2s ease, background 0.2s;
+    display: inline-block;
+  }
+  .operator:hover {
+    transform: scale(1.1);
+    background: #ddd;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  }
+  
+  .operators-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  #resultMessage {
+    margin-top: 20px;
+    font-size: 2em;
+    text-align: center;
+  }
+  
+  .success {
+    color: green;
+    font-weight: bold;
+  }
+  .failure {
+    color: red;
+    font-weight: bold;
+  }
+  
