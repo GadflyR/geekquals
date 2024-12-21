@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let draggedOp = null;
-let draggingOpType = null; // 'binary' or 'unary' or 'equal'
+let draggingOpType = null; // 'binary' | 'unary' | 'equal'
 
 document.addEventListener('dragstart', (e) => {
   if (e.target.classList.contains('operator')) {
@@ -48,14 +48,25 @@ document.addEventListener('dragstart', (e) => {
       draggingOpType = 'binary';
     }
 
-    // As soon as we start dragging, highlight ALL valid drop targets
+    // ---- CHANGED HIGHLIGHTING LOGIC FOR '=' ----
     if (draggingOpType === 'unary') {
       // highlight all numbers
       document.querySelectorAll('.number').forEach(num => {
         num.classList.add('highlight-all-valid');
       });
-    } else {
-      // highlight all slots
+    }
+    else if (draggingOpType === 'equal') {
+      // Highlight all slots EXCEPT the ones in the same slot-group as '='
+      const currentSlotGroup = draggedOp.closest('.slot-group');
+      document.querySelectorAll('.slot').forEach(slot => {
+        // If the slot is not inside the same slot-group, highlight it
+        if (slot.closest('.slot-group') !== currentSlotGroup) {
+          slot.classList.add('highlight-all-valid');
+        }
+      });
+    }
+    else {
+      // highlight all slots (binary operators)
       document.querySelectorAll('.slot').forEach(slot => {
         slot.classList.add('highlight-all-valid');
       });
@@ -78,23 +89,23 @@ document.addEventListener('dragend', () => {
 document.addEventListener('dragover', (e) => {
   if (!draggedOp) return;
 
-  // If we are over a valid target, we highlight it more
-  // We'll use `preventDefault()` only if it's indeed valid.
-  if (draggingOpType==='unary' && e.target.classList.contains('number')) {
+  if (draggingOpType === 'unary' && e.target.classList.contains('number')) {
     e.preventDefault();
     e.target.classList.add('highlight-over');
   }
-  else if ((draggingOpType==='binary' || draggingOpType==='equal') && e.target.classList.contains('slot')) {
+  else if ((draggingOpType === 'binary' || draggingOpType === 'equal') 
+           && e.target.classList.contains('slot')) {
     e.preventDefault();
     e.target.classList.add('highlight-over');
   }
 });
 
 document.addEventListener('dragleave', (e) => {
-  if (draggingOpType==='unary' && e.target.classList.contains('number')) {
+  if (draggingOpType === 'unary' && e.target.classList.contains('number')) {
     e.target.classList.remove('highlight-over');
   }
-  else if ((draggingOpType==='binary' || draggingOpType==='equal') && e.target.classList.contains('slot')) {
+  else if ((draggingOpType === 'binary' || draggingOpType === 'equal') 
+            && e.target.classList.contains('slot')) {
     e.target.classList.remove('highlight-over');
   }
 });
@@ -106,7 +117,7 @@ document.addEventListener('drop', (e) => {
   });
 
   const op = draggedOp.getAttribute('data-op');
-  if (draggingOpType==='unary') {
+  if (draggingOpType === 'unary') {
     // Only drop on a number
     if (e.target.classList.contains('number')) {
       e.preventDefault();
@@ -114,8 +125,8 @@ document.addEventListener('drop', (e) => {
       evaluateInRealTime();
     }
   }
-  else if (draggingOpType==='equal') {
-    // user can move '=' around to a slot, but not remove
+  else if (draggingOpType === 'equal') {
+    // user can move '=' around to a different slot, but not remove
     if (e.target.classList.contains('slot')) {
       e.preventDefault();
       removeOperatorFromCurrentLocation(draggedOp, true);
@@ -135,7 +146,7 @@ document.addEventListener('drop', (e) => {
 });
 
 document.addEventListener('click', (e) => {
-  // remove operator if clicked
+  // remove operator if clicked (but never '=')
   if (e.target.classList.contains('operator') 
       && !e.target.parentElement.classList.contains('operators-row')) {
     const op = e.target.getAttribute('data-op');
@@ -171,7 +182,7 @@ function applyUnaryOperatorToNumber(numberEl, op) {
   let valStr = numberEl.getAttribute('data-value');
   const original = numberEl.getAttribute('data-original-value');
   if (valStr !== original) {
-    // already transformed
+    // already transformed, skip
     return;
   }
 
