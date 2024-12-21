@@ -11,12 +11,11 @@
 <div class="game-container">
   <h1>Equation Puzzle</h1>
   <div class="instructions">
-    Drag operators onto the slots between or around numbers.<br>
-    The `=` sign starts in the middle of the equation and can be moved.<br>
-    Apply `√` or `!` by dropping directly onto a number.<br><br>
-    If exactly one `=` and correct: "Success!"<br>
-    If invalid: "Invalid expression!"<br>
-    Otherwise no message.
+    - Unary operators (`√`, `!`) must go on numbers.<br>
+    - Binary operators (`+`, `-`, `×`, `÷`, `^`, `(`, `)`), and `=` go in slots.<br>
+    - `=` starts in the middle and cannot be removed, but can be moved.<br>
+    If exactly one `=` and correct, shows "Success!"<br>
+    If invalid, "Invalid expression!"
   </div>
 
   <div class="equation-container">
@@ -31,6 +30,7 @@
     <span class="operator" draggable="true" data-op="^">^</span>
     <span class="operator" draggable="true" data-op="(">(</span>
     <span class="operator" draggable="true" data-op=")">)</span>
+    <span class="operator" draggable="true" data-op="=">=</span>
     <span class="operator" draggable="true" data-op="√">√</span>
     <span class="operator" draggable="true" data-op="!">!</span>
   </div>
